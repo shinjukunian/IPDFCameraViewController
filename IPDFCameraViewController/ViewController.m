@@ -70,15 +70,15 @@
     self.focusIndicator.hidden = NO;
     
     [UIView animateWithDuration:0.4 animations:^
-     {
+    {
          self.focusIndicator.alpha = 1.0;
-     }
-                     completion:^(BOOL finished)
-     {
+    }
+    completion:^(BOOL finished)
+    {
          [UIView animateWithDuration:0.4 animations:^
-          {
-              self.focusIndicator.alpha = 0.0;
-          }];
+         {
+             self.focusIndicator.alpha = 0.0;
+         }];
      }];
 }
 
@@ -128,10 +128,37 @@
 
 - (IBAction)captureButton:(id)sender
 {
-    [self.cameraViewController captureImageWithCompletionHander:^(id data)
+    __weak typeof(self) weakSelf = self;
+    
+    [self.cameraViewController captureImageWithCompletionHander:^(NSString *imageFilePath)
     {
-        UIImage *image = ([data isKindOfClass:[NSData class]]) ? [UIImage imageWithData:data] : data;
-        NSLog(@"%@",image);
+        UIImageView *captureImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imageFilePath]];
+        captureImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
+        captureImageView.frame = CGRectOffset(weakSelf.view.bounds, 0, -weakSelf.view.bounds.size.height);
+        captureImageView.alpha = 1.0;
+        captureImageView.contentMode = UIViewContentModeScaleAspectFit;
+        captureImageView.userInteractionEnabled = YES;
+        [weakSelf.view addSubview:captureImageView];
+        
+        UITapGestureRecognizer *dismissTap = [[UITapGestureRecognizer alloc] initWithTarget:weakSelf action:@selector(dismissPreview:)];
+        [captureImageView addGestureRecognizer:dismissTap];
+        
+        [UIView animateWithDuration:0.7 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:0.7 options:UIViewAnimationOptionAllowUserInteraction animations:^
+        {
+            captureImageView.frame = weakSelf.view.bounds;
+        } completion:nil];
+    }];
+}
+
+- (void)dismissPreview:(UITapGestureRecognizer *)dismissTap
+{
+    [UIView animateWithDuration:0.7 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:1.0 options:UIViewAnimationOptionAllowUserInteraction animations:^
+    {
+        dismissTap.view.frame = CGRectOffset(self.view.bounds, 0, self.view.bounds.size.height);
+    }
+    completion:^(BOOL finished)
+    {
+        [dismissTap.view removeFromSuperview];
     }];
 }
 

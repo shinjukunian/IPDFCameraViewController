@@ -11,8 +11,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <CoreVideo/CoreVideo.h>
+#import <QuartzCore/QuartzCore.h>
 #import <CoreImage/CoreImage.h>
 #import <ImageIO/ImageIO.h>
+
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import <GLKit/GLKit.h>
 
 @interface IPDFCameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
@@ -41,6 +45,7 @@
     CIRectangleFeature *_borderDetectLastRectangleFeature;
     
     BOOL _isCapturing;
+    dispatch_queue_t _captureQueue;
 }
 
 - (void)awakeFromNib
@@ -50,6 +55,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_backgroundMode) name:UIApplicationWillResignActiveNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_foregroundMode) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
+    _captureQueue = dispatch_queue_create("com.instapdf.AVCameraCaptureQueue", DISPATCH_QUEUE_SERIAL);
 }
 
 - (void)_backgroundMode
@@ -80,10 +87,7 @@
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     [self insertSubview:view atIndex:0];
     _glkView = view;
-    glGenRenderbuffers(1, &_renderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
-    _coreImageContext = [CIContext contextWithEAGLContext:self.context];
-    [EAGLContext setCurrentContext:self.context];
+    _coreImageContext = [CIContext contextWithEAGLContext:self.context options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
 }
 
 - (void)setupCameraView
@@ -109,7 +113,7 @@
     AVCaptureVideoDataOutput *dataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [dataOutput setAlwaysDiscardsLateVideoFrames:YES];
     [dataOutput setVideoSettings:@{(id)kCVPixelBufferPixelFormatTypeKey:@(kCVPixelFormatType_32BGRA)}];
-    [dataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+    [dataOutput setSampleBufferDelegate:self queue:_captureQueue];
     [session addOutput:dataOutput];
     
     self.stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
@@ -191,10 +195,15 @@
     
     if (self.context && _coreImageContext)
     {
-        [_coreImageContext drawImage:image inRect:self.bounds fromRect:image.extent];
-        [self.context presentRenderbuffer:GL_RENDERBUFFER];
+        if(_context != [EAGLContext currentContext])
+        {
+            [EAGLContext setCurrentContext:_context];
+        }
+        [_glkView bindDrawable];
+        [_coreImageContext drawImage:image inRect:self.bounds fromRect:[image extent]];
+        [_glkView display];
         
-        [_glkView setNeedsDisplay];
+        image = nil;
     }
 }
 
@@ -288,21 +297,9 @@
     }
 }
 
-- (void)captureImageWithCompletionHander:(void(^)(id data))completionHandler
+- (void)captureImageWithCompletionHander:(void(^)(NSString *imageFilePath))completionHandler
 {
-    if (_isCapturing) return;
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [weakSelf hideGLKView:YES completion:^
-    {
-        [weakSelf hideGLKView:NO completion:^
-        {
-            [weakSelf hideGLKView:YES completion:nil];
-        }];
-    }];
-    
-    _isCapturing = YES;
+    dispatch_suspend(_captureQueue);
     
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in self.stillImageOutput.connections)
@@ -318,13 +315,23 @@
         if (videoConnection) break;
     }
     
+    __weak typeof(self) weakSelf = self;
+    
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
-         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         
-         if (weakSelf.cameraViewType == IPDFCameraViewTypeBlackAndWhite || weakSelf.isBorderDetectionEnabled)
+         if (error)
          {
-             CIImage *enhancedImage = [CIImage imageWithData:imageData];
+             dispatch_resume(_captureQueue);
+             return;
+         }
+         
+         __block NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"ipdf_img_%i.jpeg",(int)[NSDate date].timeIntervalSince1970]];
+         
+         @autoreleasepool
+         {
+             NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+             CIImage *enhancedImage = [[CIImage alloc] initWithData:imageData options:@{kCIImageColorSpace:[NSNull null]}];
+             imageData = nil;
              
              if (weakSelf.cameraViewType == IPDFCameraViewTypeBlackAndWhite)
              {
@@ -345,22 +352,68 @@
                  }
              }
              
-             UIGraphicsBeginImageContext(CGSizeMake(enhancedImage.extent.size.height, enhancedImage.extent.size.width));
-             [[UIImage imageWithCIImage:enhancedImage scale:1.0 orientation:UIImageOrientationRight] drawInRect:CGRectMake(0,0, enhancedImage.extent.size.height, enhancedImage.extent.size.width)];
-             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-             UIGraphicsEndImageContext();
+             CIFilter *transform = [CIFilter filterWithName:@"CIAffineTransform"];
+             [transform setValue:enhancedImage forKey:kCIInputImageKey];
+             NSValue *rotation = [NSValue valueWithCGAffineTransform:CGAffineTransformMakeRotation(-90 * (M_PI/180))];
+             [transform setValue:rotation forKey:@"inputTransform"];
+             enhancedImage = [transform outputImage];
              
-             [weakSelf hideGLKView:NO completion:nil];
-             completionHandler(image);
+             if (!enhancedImage || CGRectIsEmpty(enhancedImage.extent)) return;
+             
+             static CIContext *ctx = nil;
+             if (!ctx)
+             {
+                 ctx = [CIContext contextWithOptions:@{kCIContextWorkingColorSpace:[NSNull null]}];
+             }
+             
+             CGSize bounds = enhancedImage.extent.size;
+             bounds = CGSizeMake(floorf(bounds.width / 4) * 4,floorf(bounds.height / 4) * 4);
+             CGRect extent = CGRectMake(enhancedImage.extent.origin.x, enhancedImage.extent.origin.y, bounds.width, bounds.height);
+             
+             static int bytesPerPixel = 8;
+             uint rowBytes = bytesPerPixel * bounds.width;
+             uint totalBytes = rowBytes * bounds.height;
+             uint8_t *byteBuffer = malloc(totalBytes);
+             
+             CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+             
+             [ctx render:enhancedImage toBitmap:byteBuffer rowBytes:rowBytes bounds:extent format:kCIFormatRGBA8 colorSpace:colorSpace];
+             
+             CGContextRef bitmapContext = CGBitmapContextCreate(byteBuffer,bounds.width,bounds.height,bytesPerPixel,rowBytes,colorSpace,kCGImageAlphaNoneSkipLast);
+             CGImageRef imgRef = CGBitmapContextCreateImage(bitmapContext);
+             CGColorSpaceRelease(colorSpace);
+             CGContextRelease(bitmapContext);
+             free(byteBuffer);
+             
+             if (imgRef == NULL)
+             {
+                 CFRelease(imgRef);
+                 return;
+             }
+             saveCGImageAsJPEGToFilePath(imgRef, filePath);
+             CFRelease(imgRef);
+             
+             dispatch_async(dispatch_get_main_queue(), ^
+             {
+                completionHandler(filePath);
+                dispatch_resume(_captureQueue);
+             });
+             
+             _imageDedectionConfidence = 0.0f;
          }
-         else
-         {
-             [weakSelf hideGLKView:NO completion:nil];
-             completionHandler(imageData);
-         }
-         
-         _isCapturing = NO;
      }];
+}
+
+void saveCGImageAsJPEGToFilePath(CGImageRef imageRef, NSString *filePath)
+{
+    @autoreleasepool
+    {
+        CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:filePath];
+        CGImageDestinationRef destination = CGImageDestinationCreateWithURL(url, kUTTypeJPEG, 1, NULL);
+        CGImageDestinationAddImage(destination, imageRef, nil);
+        CGImageDestinationFinalize(destination);
+        CFRelease(destination);
+    }
 }
 
 - (void)hideGLKView:(BOOL)hidden completion:(void(^)())completion
