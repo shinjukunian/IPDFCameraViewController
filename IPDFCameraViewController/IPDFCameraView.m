@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 mackh ag. All rights reserved.
 //
 
-#import "IPDFCameraViewController.h"
+#import "IPDFCameraView.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMedia/CoreMedia.h>
@@ -19,7 +19,7 @@
 
 #import <GLKit/GLKit.h>
 
-@interface IPDFCameraViewController () <AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface IPDFCameraView () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @property (nonatomic,strong) AVCaptureSession *captureSession;
 @property (nonatomic,strong) AVCaptureDevice *captureDevice;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation IPDFCameraViewController
+@implementation IPDFCameraView
 {
     CIContext *_coreImageContext;
     GLuint _renderBuffer;
@@ -164,34 +164,54 @@
     
     CIImage *image = [CIImage imageWithCVPixelBuffer:pixelBuffer];
     
-    if (self.cameraViewType != IPDFCameraViewTypeNormal)
-    {
-        image = [self filteredImageUsingEnhanceFilterOnImage:image];
-    }
-    else
-    {
-        image = [self filteredImageUsingContrastFilterOnImage:image];
+    switch (self.detectionType) {
+        case RectangleFeatureDetection:{
+            
+            if (self.cameraViewType != IPDFCameraViewTypeNormal)
+            {
+                image = [self filteredImageUsingEnhanceFilterOnImage:image];
+            }
+            else
+            {
+                image = [self filteredImageUsingContrastFilterOnImage:image];
+            }
+            
+            if (self.isBorderDetectionEnabled)
+            {
+                if (_borderDetectFrame)
+                {
+                    _borderDetectLastRectangleFeature = [self biggestRectangleInRectangles:[[self highAccuracyRectangleDetector] featuresInImage:image]];
+                    _borderDetectFrame = NO;
+                }
+                
+                if (_borderDetectLastRectangleFeature)
+                {
+                    _imageDedectionConfidence += .5;
+                    
+                    image = [self drawHighlightOverlayForPoints:image topLeft:_borderDetectLastRectangleFeature.topLeft topRight:_borderDetectLastRectangleFeature.topRight bottomLeft:_borderDetectLastRectangleFeature.bottomLeft bottomRight:_borderDetectLastRectangleFeature.bottomRight];
+                }
+                else
+                {
+                    _imageDedectionConfidence = 0.0f;
+                }
+            }
+             break;
+        }
+            
+           
+        case QRCodeFeatureDetection:{
+           
+            NSArray *array=[[self qrDetector]featuresInImage:image options:@{}];
+            NSArray *messages=[array valueForKeyPath:@"messageString"];
+            [self.cameraViewDelegate cameraView:self didDetectFeatures:messages ofType:QRCodeFeatureDetection];
+            break;
+        }
+            
+        default:
+            break;
     }
     
-    if (self.isBorderDetectionEnabled)
-    {
-        if (_borderDetectFrame)
-        {
-            _borderDetectLastRectangleFeature = [self biggestRectangleInRectangles:[[self highAccuracyRectangleDetector] featuresInImage:image]];
-            _borderDetectFrame = NO;
-        }
-        
-        if (_borderDetectLastRectangleFeature)
-        {
-            _imageDedectionConfidence += .5;
-            
-            image = [self drawHighlightOverlayForPoints:image topLeft:_borderDetectLastRectangleFeature.topLeft topRight:_borderDetectLastRectangleFeature.topRight bottomLeft:_borderDetectLastRectangleFeature.bottomLeft bottomRight:_borderDetectLastRectangleFeature.bottomRight];
-        }
-        else
-        {
-            _imageDedectionConfidence = 0.0f;
-        }
-    }
+    
     
     if (self.context && _coreImageContext)
     {
@@ -469,6 +489,17 @@ void saveCGImageAsJPEGToFilePath(CGImageRef imageRef, NSString *filePath)
         detector = [CIDetector detectorOfType:CIDetectorTypeRectangle context:nil options:@{CIDetectorAccuracy : CIDetectorAccuracyHigh}];
     });
     return detector;
+}
+
+-(CIDetector*)qrDetector{
+    static CIDetector *detector = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+                  {
+                      detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:_coreImageContext options:nil];
+                  });
+    return detector;
+    
 }
 
 - (CIRectangleFeature *)biggestRectangleInRectangles:(NSArray *)rectangles

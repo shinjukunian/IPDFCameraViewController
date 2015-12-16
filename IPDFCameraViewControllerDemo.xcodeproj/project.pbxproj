@@ -9,12 +9,41 @@
 /* Begin PBXBuildFile section */
 		22F8A00F1A6279030099DC69 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A00E1A6279030099DC69 /* main.m */; };
 		22F8A0121A6279030099DC69 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A0111A6279030099DC69 /* AppDelegate.m */; };
-		22F8A0151A6279030099DC69 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A0141A6279030099DC69 /* ViewController.m */; };
-		22F8A0181A6279030099DC69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22F8A0161A6279030099DC69 /* Main.storyboard */; };
-		22F8A01A1A6279030099DC69 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22F8A0191A6279030099DC69 /* Images.xcassets */; };
 		22F8A01D1A6279030099DC69 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22F8A01B1A6279030099DC69 /* LaunchScreen.xib */; };
-		22F8A0351A62799E0099DC69 /* IPDFCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A0341A62799E0099DC69 /* IPDFCameraViewController.m */; };
+		B78FEBF61C1139610018F7D2 /* FeatureDetectionCameraView.h in Headers */ = {isa = PBXBuildFile; fileRef = B78FEBF51C1139610018F7D2 /* FeatureDetectionCameraView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B78FEBFA1C1139610018F7D2 /* FeatureDetectionCameraView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B78FEBF31C1139610018F7D2 /* FeatureDetectionCameraView.framework */; };
+		B78FEBFB1C1139610018F7D2 /* FeatureDetectionCameraView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B78FEBF31C1139610018F7D2 /* FeatureDetectionCameraView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B78FEC001C11396F0018F7D2 /* FeatureDetectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A0141A6279030099DC69 /* FeatureDetectionViewController.m */; };
+		B78FEC011C1139740018F7D2 /* FeatureDetectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F8A0131A6279030099DC69 /* FeatureDetectionViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B78FEC021C11397B0018F7D2 /* IPDFCameraView.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F8A0331A62799E0099DC69 /* IPDFCameraView.h */; };
+		B78FEC031C11397F0018F7D2 /* IPDFCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F8A0341A62799E0099DC69 /* IPDFCameraView.m */; };
+		B78FEC051C1139F60018F7D2 /* FeatureDetectionCameraViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B78FEC041C1139F60018F7D2 /* FeatureDetectionCameraViewController.xib */; };
+		B78FEC061C1140A90018F7D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22F8A0191A6279030099DC69 /* Images.xcassets */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B78FEBF81C1139610018F7D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22F8A0011A6279030099DC69 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B78FEBF21C1139610018F7D2;
+			remoteInfo = FeatureDetectionCameraView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B78FEBFF1C1139610018F7D2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B78FEBFB1C1139610018F7D2 /* FeatureDetectionCameraView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		22F8A0091A6279030099DC69 /* IPDFCameraViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPDFCameraViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,17 +51,28 @@
 		22F8A00E1A6279030099DC69 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		22F8A0101A6279030099DC69 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		22F8A0111A6279030099DC69 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		22F8A0131A6279030099DC69 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		22F8A0141A6279030099DC69 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		22F8A0171A6279030099DC69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		22F8A0191A6279030099DC69 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		22F8A0131A6279030099DC69 /* FeatureDetectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FeatureDetectionViewController.h; path = ../IPDFCameraViewController/FeatureDetectionViewController.h; sourceTree = "<group>"; };
+		22F8A0141A6279030099DC69 /* FeatureDetectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = FeatureDetectionViewController.m; path = ../IPDFCameraViewController/FeatureDetectionViewController.m; sourceTree = "<group>"; };
+		22F8A0191A6279030099DC69 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../IPDFCameraViewController/Images.xcassets; sourceTree = "<group>"; };
 		22F8A01C1A6279030099DC69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		22F8A0331A62799E0099DC69 /* IPDFCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPDFCameraViewController.h; sourceTree = "<group>"; };
-		22F8A0341A62799E0099DC69 /* IPDFCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPDFCameraViewController.m; sourceTree = "<group>"; };
+		22F8A0331A62799E0099DC69 /* IPDFCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IPDFCameraView.h; path = ../IPDFCameraViewController/IPDFCameraView.h; sourceTree = "<group>"; };
+		22F8A0341A62799E0099DC69 /* IPDFCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IPDFCameraView.m; path = ../IPDFCameraViewController/IPDFCameraView.m; sourceTree = "<group>"; };
+		B78FEBF31C1139610018F7D2 /* FeatureDetectionCameraView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatureDetectionCameraView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B78FEBF51C1139610018F7D2 /* FeatureDetectionCameraView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatureDetectionCameraView.h; sourceTree = "<group>"; };
+		B78FEBF71C1139610018F7D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B78FEC041C1139F60018F7D2 /* FeatureDetectionCameraViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeatureDetectionCameraViewController.xib; path = ../IPDFCameraViewController/FeatureDetectionCameraViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		22F8A0061A6279030099DC69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B78FEBFA1C1139610018F7D2 /* FeatureDetectionCameraView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B78FEBEF1C1139610018F7D2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				22F8A00B1A6279030099DC69 /* IPDFCameraViewControllerDemo */,
+				B78FEBF41C1139610018F7D2 /* FeatureDetectionCameraView */,
 				22F8A00A1A6279030099DC69 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				22F8A0091A6279030099DC69 /* IPDFCameraViewControllerDemo.app */,
+				B78FEBF31C1139610018F7D2 /* FeatureDetectionCameraView.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,12 +105,7 @@
 			children = (
 				22F8A0101A6279030099DC69 /* AppDelegate.h */,
 				22F8A0111A6279030099DC69 /* AppDelegate.m */,
-				22F8A0131A6279030099DC69 /* ViewController.h */,
-				22F8A0141A6279030099DC69 /* ViewController.m */,
-				22F8A0321A6279850099DC69 /* IPDFCameraViewController */,
-				22F8A0161A6279030099DC69 /* Main.storyboard */,
 				22F8A01B1A6279030099DC69 /* LaunchScreen.xib */,
-				22F8A0191A6279030099DC69 /* Images.xcassets */,
 				22F8A00C1A6279030099DC69 /* Supporting Files */,
 			);
 			name = IPDFCameraViewControllerDemo;
@@ -84,16 +121,35 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		22F8A0321A6279850099DC69 /* IPDFCameraViewController */ = {
+		B78FEBF41C1139610018F7D2 /* FeatureDetectionCameraView */ = {
 			isa = PBXGroup;
 			children = (
-				22F8A0331A62799E0099DC69 /* IPDFCameraViewController.h */,
-				22F8A0341A62799E0099DC69 /* IPDFCameraViewController.m */,
+				22F8A0191A6279030099DC69 /* Images.xcassets */,
+				22F8A0131A6279030099DC69 /* FeatureDetectionViewController.h */,
+				22F8A0141A6279030099DC69 /* FeatureDetectionViewController.m */,
+				B78FEC041C1139F60018F7D2 /* FeatureDetectionCameraViewController.xib */,
+				22F8A0331A62799E0099DC69 /* IPDFCameraView.h */,
+				22F8A0341A62799E0099DC69 /* IPDFCameraView.m */,
+				B78FEBF51C1139610018F7D2 /* FeatureDetectionCameraView.h */,
+				B78FEBF71C1139610018F7D2 /* Info.plist */,
 			);
-			name = IPDFCameraViewController;
+			path = FeatureDetectionCameraView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B78FEBF01C1139610018F7D2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B78FEC011C1139740018F7D2 /* FeatureDetectionViewController.h in Headers */,
+				B78FEBF61C1139610018F7D2 /* FeatureDetectionCameraView.h in Headers */,
+				B78FEC021C11397B0018F7D2 /* IPDFCameraView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		22F8A0081A6279030099DC69 /* IPDFCameraViewControllerDemo */ = {
@@ -103,15 +159,35 @@
 				22F8A0051A6279030099DC69 /* Sources */,
 				22F8A0061A6279030099DC69 /* Frameworks */,
 				22F8A0071A6279030099DC69 /* Resources */,
+				B78FEBFF1C1139610018F7D2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B78FEBF91C1139610018F7D2 /* PBXTargetDependency */,
 			);
 			name = IPDFCameraViewControllerDemo;
 			productName = IPDFCameraViewController;
 			productReference = 22F8A0091A6279030099DC69 /* IPDFCameraViewControllerDemo.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B78FEBF21C1139610018F7D2 /* FeatureDetectionCameraView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B78FEBFC1C1139610018F7D2 /* Build configuration list for PBXNativeTarget "FeatureDetectionCameraView" */;
+			buildPhases = (
+				B78FEBEE1C1139610018F7D2 /* Sources */,
+				B78FEBEF1C1139610018F7D2 /* Frameworks */,
+				B78FEBF01C1139610018F7D2 /* Headers */,
+				B78FEBF11C1139610018F7D2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FeatureDetectionCameraView;
+			productName = FeatureDetectionCameraView;
+			productReference = B78FEBF31C1139610018F7D2 /* FeatureDetectionCameraView.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -119,11 +195,14 @@
 		22F8A0011A6279030099DC69 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Maximilian Mackh";
 				TargetAttributes = {
 					22F8A0081A6279030099DC69 = {
 						CreatedOnToolsVersion = 6.1.1;
+					};
+					B78FEBF21C1139610018F7D2 = {
+						CreatedOnToolsVersion = 7.1.1;
 					};
 				};
 			};
@@ -141,6 +220,7 @@
 			projectRoot = "";
 			targets = (
 				22F8A0081A6279030099DC69 /* IPDFCameraViewControllerDemo */,
+				B78FEBF21C1139610018F7D2 /* FeatureDetectionCameraView */,
 			);
 		};
 /* End PBXProject section */
@@ -150,9 +230,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F8A0181A6279030099DC69 /* Main.storyboard in Resources */,
 				22F8A01D1A6279030099DC69 /* LaunchScreen.xib in Resources */,
-				22F8A01A1A6279030099DC69 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B78FEBF11C1139610018F7D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B78FEC051C1139F60018F7D2 /* FeatureDetectionCameraViewController.xib in Resources */,
+				B78FEC061C1140A90018F7D2 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,24 +250,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F8A0351A62799E0099DC69 /* IPDFCameraViewController.m in Sources */,
-				22F8A0151A6279030099DC69 /* ViewController.m in Sources */,
 				22F8A0121A6279030099DC69 /* AppDelegate.m in Sources */,
 				22F8A00F1A6279030099DC69 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B78FEBEE1C1139610018F7D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B78FEC031C11397F0018F7D2 /* IPDFCameraView.m in Sources */,
+				B78FEC001C11396F0018F7D2 /* FeatureDetectionViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		22F8A0161A6279030099DC69 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22F8A0171A6279030099DC69 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		B78FEBF91C1139610018F7D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B78FEBF21C1139610018F7D2 /* FeatureDetectionCameraView */;
+			targetProxy = B78FEBF81C1139610018F7D2 /* PBXContainerItemProxy */;
 		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
 		22F8A01B1A6279030099DC69 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -212,6 +306,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -274,6 +369,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = IPDFCameraViewController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mackh.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = IPDFCameraViewControllerDemo;
 			};
 			name = Debug;
@@ -284,7 +380,56 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = IPDFCameraViewController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mackh.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = IPDFCameraViewControllerDemo;
+			};
+			name = Release;
+		};
+		B78FEBFD1C1139610018F7D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = FeatureDetectionCameraView/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = MB.FeatureDetectionCameraView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B78FEBFE1C1139610018F7D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = FeatureDetectionCameraView/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = MB.FeatureDetectionCameraView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -305,6 +450,15 @@
 			buildConfigurations = (
 				22F8A02D1A6279040099DC69 /* Debug */,
 				22F8A02E1A6279040099DC69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B78FEBFC1C1139610018F7D2 /* Build configuration list for PBXNativeTarget "FeatureDetectionCameraView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B78FEBFD1C1139610018F7D2 /* Debug */,
+				B78FEBFE1C1139610018F7D2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

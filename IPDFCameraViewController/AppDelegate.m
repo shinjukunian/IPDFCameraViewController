@@ -7,8 +7,10 @@
 //
 
 #import "AppDelegate.h"
+@import FeatureDetectionCameraView;
 
 @interface AppDelegate ()
+@property FeatureDetectionViewController *controller;
 
 @end
 
@@ -17,6 +19,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+   self.controller=[[FeatureDetectionViewController alloc]initQRDetectionControllerWithCompletion:^BOOL(NSData *data){
+    
+        return YES;
+    }];
+    [self.window setRootViewController:self.controller];
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
